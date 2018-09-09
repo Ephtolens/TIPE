@@ -1,0 +1,25 @@
+{
+  "name": "TIPE",
+  "version": "1.0.0",
+  "description": "L'ensemble de nos ressources pour le TIPE",
+  "engines": {
+  },
+  "main": ,
+  "scripts": {
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WariorZ1/TIPE"
+  },
+  "keywords": [
+    "TIPE",
+    "Réseaux de neurones",
+    "deep learning"
+  ],
+  "license": "MIT"
+}
