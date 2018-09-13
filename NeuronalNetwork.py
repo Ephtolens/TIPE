@@ -22,7 +22,7 @@ class NeuralNetwork:
 
 	#Fonction que l'on n'utilise pas directement dans l'apprentissage mais qui peut être utile
 	def mutate(x):
-		''' Mute la valeur de x  '''
+	# Mute la valeur de x
 		if(random() < 0.1):
 			offset = randint(-100,100)/1000
 			newx = offset + x
