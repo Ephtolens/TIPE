@@ -28,7 +28,7 @@ class neuralNetwork:
 				b = self.hiddenAr[-1]
 			else:
 				a = self.hiddenAr[i]
-				b = self.hiddenAr[i-1]	
+				b = self.hiddenAr[i-1]
 			self.weightsAr.append(np.array([[(random() * 2 - 1) for _ in range(b)] for _ in range(a)]))
 			self.biasAr.append([[(random() * 2 - 1)] for _ in range(a)])
 
@@ -46,7 +46,7 @@ class neuralNetwork:
 		elif(function == 'tanh'):
 			self.activation = np.tanh
 			self.derivate = np.vectorize(lambda x : 1 - (x * x))
- 
+
 
 
 	def predict(self,inputs_array,calcType = "predict"):
@@ -75,7 +75,7 @@ class neuralNetwork:
 	def train(self,inputs,target):
 
 		layersOutputAr = self.predict(inputs,"train")
-		
+
 
 		inputs = np.transpose([inputs])
 		target = np.transpose([target])
@@ -109,7 +109,7 @@ class neuralNetwork:
 		self.weightsAr.append(np.array([[(random() * 2 - 1) for _ in range(b)] for _ in range(a)]))
 		self.biasAr.append([[(random() * 2 - 1)] for _ in range(a)])
 
-				
+
 
 #Test with xor
 def xor():
