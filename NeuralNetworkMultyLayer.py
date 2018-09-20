@@ -12,21 +12,6 @@ class neuralNetwork:
 
 	"""
 
-<<<<<<< HEAD
-		for i in range(0,self.nbLayer + 1):
-			if i == 0:
-				a = self.hiddenAr[0]
-				b = self.nbInputs
-			elif i == self.nbLayer:
-				a = self.nbOutputs
-				b = self.hiddenAr[-1]
-			else:
-				a = self.hiddenAr[i]
-				b = self.hiddenAr[i-1]
-			self.weightsAr.append(np.array([[(random() * 2 - 1) for _ in range(b)] for _ in range(a)]))
-			self.biasAr.append([[(random() * 2 - 1)] for _ in range(a)])
-=======
->>>>>>> 8aa3432f5e03efbf06dab4dd54292c42e0e3c990
 
 	def __init__(self,inputs = 1,hidden = [1],outputs = 1):
 		""" Initialisation du réseau / int, int array, int"""
@@ -77,7 +62,7 @@ class neuralNetwork:
 		elif(function == 'tanh'):
 			self.activation = np.tanh
 			self.derivate = np.vectorize(lambda x : 1 - (x * x))
-
+ 
 
 
 	def predict(self,inputs_array,calcType = "predict"):
@@ -109,7 +94,7 @@ class neuralNetwork:
 		""" Méthode d'entrainement du réseau / array des valeurs d'entrée, array des valeurs de sortie souhaitées """
 
 		layersOutputAr = self.predict(inputs,"train")
-
+		
 
 		inputs = np.transpose([inputs])
 		target = np.transpose([target])
@@ -206,10 +191,6 @@ class neuralNetwork:
 
 		return output
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8aa3432f5e03efbf06dab4dd54292c42e0e3c990
 
 #Test with xor
 def xor():
