@@ -12,6 +12,10 @@ class neuralNetwork:
 
 	"""
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2aab6410480c3b3a5c73ee60681963627f96ed70
 	def __init__(self,inputs = 1,hidden = [1],outputs = 1):
 		""" Initialisation du réseau / int, int array, int"""
 
@@ -61,7 +65,7 @@ class neuralNetwork:
 		elif(function == 'tanh'):
 			self.activation = np.tanh
 			self.derivate = np.vectorize(lambda x : 1 - (x * x))
-
+ 
 
 
 	def predict(self,inputs_array,calcType = "predict"):
@@ -93,7 +97,7 @@ class neuralNetwork:
 		""" Méthode d'entrainement du réseau / array des valeurs d'entrée, array des valeurs de sortie souhaitées """
 
 		layersOutputAr = self.predict(inputs,"train")
-
+		
 
 		inputs = np.transpose([inputs])
 		target = np.transpose([target])
@@ -190,7 +194,10 @@ class neuralNetwork:
 
 		return output
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2aab6410480c3b3a5c73ee60681963627f96ed70
 
 #Test with xor
 def xor():
