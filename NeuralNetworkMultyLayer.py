@@ -12,22 +12,6 @@ class neuralNetwork:
 
 	"""
 
-<<<<<<< HEAD
-		for i in range(0,self.nbLayer + 1):
-			if i == 0:
-				a = self.hiddenAr[0]
-				b = self.nbInputs
-			elif i == self.nbLayer:
-				a = self.nbOutputs
-				b = self.hiddenAr[-1]
-			else:
-				a = self.hiddenAr[i]
-				b = self.hiddenAr[i-1]
-			self.weightsAr.append(np.array([[(random() * 2 - 1) for _ in range(b)] for _ in range(a)]))
-			self.biasAr.append([[(random() * 2 - 1)] for _ in range(a)])
-=======
->>>>>>> 8aa3432f5e03efbf06dab4dd54292c42e0e3c990
-
 	def __init__(self,inputs = 1,hidden = [1],outputs = 1):
 		""" Initialisation du réseau / int, int array, int"""
 
@@ -49,7 +33,7 @@ class neuralNetwork:
 					b = self.hiddenAr[-1]
 				else:
 					a = self.hiddenAr[i]
-					b = self.hiddenAr[i-1]	
+					b = self.hiddenAr[i-1]
 				self.weightsAr.append(np.array([[random() for _ in range(b)] for _ in range(a)]))
 				self.biasAr.append([[random()] for _ in range(a)])
 
@@ -170,7 +154,7 @@ class neuralNetwork:
 
 		self.__init__(A.nbInputs,A.hiddenAr,A.nbOutputs)
 		self.weightsAr = A.weightsAr
-		self.biasAr = A.biasAr			
+		self.biasAr = A.biasAr
 		self.lr = A.lr 					# Affectation du réseau chargé dans le réseau actuel
 		self.activation = A.activation
 		self.derivate = A.derivate
@@ -206,10 +190,7 @@ class neuralNetwork:
 
 		return output
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 8aa3432f5e03efbf06dab4dd54292c42e0e3c990
 
 #Test with xor
 def xor():

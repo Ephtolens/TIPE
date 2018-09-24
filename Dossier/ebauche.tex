@@ -1,0 +1,184 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel} 
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{fancyhdr}
+\usepackage{pgf,tikz}
+\usepackage{tkz-tab}
+\usepackage{mathrsfs}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{pgfplots}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{color}
+
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lfoot{\textit{TIPE - ALban Gosset / Félix Gravet}}
+\cfoot{\thepage}
+\rfoot{\nameref{section: \thesection} : \nameref{subsection: \thesubsection}}
+\geometry{a4paper, portrait, margin=0.95in}
+\parskip=10pt 
+\parindent=0pt
+\setlength{\parindent}{26pt}
+\pgfplotsset{compat=1.16}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\usepackage[hidelinks]{hyperref}
+\begin{document}
+
+%%%%%%%%%%     Page de garde     %%%%%%%%%%
+\iffalse
+\thispagestyle{empty}
+\center{\textbf{\huge{TIPE :}}}
+\center{\textbf{\Huge{\underline{Réseaux de neurones}}}}
+\center{\textbf{\Huge{\underline{et}}}}
+\center{\textbf{\Huge{\underline{voiture autonome}}}}
+\newpage
+\fi
+
+%%%%%%%%%%     Table des matieres     %%%%%%%%%%
+\tableofcontents
+\rfoot{Table des matieres}
+\newpage
+
+
+%%%%%%%%%%     Introduction     %%%%%%%%%%
+
+\section{Présentation}\label{section: \thesection}
+\rfoot{\nameref{section: \thesection}}
+Les voitures autonomes sont aujourd'hui au coeur de l'actualité, tant en terme d'innovation que de débats au sujet de leurs fiabilitées ou de leur autonomie. Ces dernières années, le développement de nouveaux algorithmes couplés à la puissance de calcul phénomenale fournit par des ordinateurs toujours plus compact ont permis la démocratisation de nouvelles façons de programmer. Les algorithmes dédié aux voitures autonome se basent aujourd'hui en partie sur un modèle appelée \textit{deeplearning} (ou apprentissage profond) qui comprend la structure algorithmique du réseau neuronal. Ce système se démarque des simples algorithmes impératifs classiques par une étape dite d'apprentissage. Nous reviendrons sur ce concept plus en details par la suite.
+
+Nous nous sommes alors posé la question suivante : \textbf{Comment fonctionne ce genre d'algorithmes et est-il possible, à notre échelle, d'en implémenter un afin d'automatiser une voiture radio-commandée ?}
+
+Nous traiterons dans un premier temps du fonctionnement de base d'un système d'aprentissage profond, nous aborderons ensuite le cas des structures neuronales plus complexe, discutant des avantages et des limites propres à chacunes. Nous détaillerons enfin la conception de notre voiture radio-commandée autonome.
+\newpage
+
+\rfoot{\nameref{section: \thesection} : \nameref{subsection: \thesubsection}}
+
+\section{Les réseaux neuronaux}\label{section: \thesection}
+
+Les réseaux neuronaux sont des outils algorithmiques permettant principalement de catégoriser des données selon des règles pré-établies. Ils peuvent être utilisés pour des taches diverses et variées telles que les prévisions météorologiques ou, pour ce qui nous intéresse, la reconnaissance d'image. Mais finalement, qu'est-ce qu'un réseau de neurone ?
+
+\subsection{Le perceptron}\label{subsection: \thesubsection}
+Le principe du perceptron a été inspiré par le fonctionnement des neurones humains. Il génère une sortie paramamétrée par des variables d'entrée. Algorithmiquement, le perceptron effectue la somme pondérée des valeurs d'entrées par des \textit{poids} (notés $w$ par la suite) à laquelle on ajoute un biais (noté $b$).
+Le résultat obtenu passe à travers une fonction d'activation ($\mathds{R} \rightarrow \mathds{R}$) afin de générer une sortie exploitable. Nous reparlerons plus en détail de ces fonctions par la suite.
+
+Le plus simple des perceptrons (ou neurones) est consitué de deux entrés et d'une sortie. On peut le représenter selon le graphique ci-dessous:
+\begin{center}
+\begin{tikzpicture}
+  \draw (3,0) arc (0:360:0.6);
+  \draw (2.45,2.7) node[above] {$i_1$};
+  \draw (3,3) -- (6,1.5);
+  \draw (4.5,0.75) node[above] {$w_1$};
+
+  \draw (3,3) arc (0:360:0.6);
+  \draw (2.45,-0.3) node[above] {$i_2$};
+  \draw (3,0) -- (6,1.5);
+  \draw (4.5,2.25) node[above] {$w_2$};
+
+  \draw (7.2,1.5) arc (0:360:0.6);
+  \draw (6.6,1.15) node[above] {$\sum$};
+  \draw (6.65,3) node[above] {$b$};
+  \draw (6.6,3) -- (6.6,2.1);
+  \draw (7.2,1.5) -- (9,1.5);
+  \draw (9.25,1.25) node[above] {$O$};
+
+\end{tikzpicture}
+\end{center}
+Si l'on note $\sigma$ la fonction d'activation, on obtient alors:
+\begin{align}
+O = \sigma ( i_1 \times w_1  + i_2 \times w_2 + b )
+\end{align}
+On peut réécrire matriciellement cette expression en considérant les matrices :
+\begin{align*}
+I = (i_1 \ i_2) \ \  P = \begin{pmatrix}{w_1}\\{w_2}\end{pmatrix}  \ B = (b)
+\end{align*}
+On obtient alors:
+\begin{align}
+O = \sigma \left( I \cdot P + B \right)
+\end{align}
+On définit la fonction d'activation pour une matrice:
+
+$Soit \ A = (a_{ij})_{\substack{1 \leqslant i \leqslant n \\ 1 \leqslant j \leqslant p}} \in \mathcal{M}_{np}(\mathds{R})$
+\begin{align}
+\sigma [A] = ( \sigma (a_{ij}))_{1 \leqslant i \leqslant n ,\ 1 \leqslant j \leqslant p}
+\end{align}
+Nous allons maintenant étudier l'application $f_{2,1}$ qui correspond à un perceptron à deux entrés. C'est le plus petit système présentant un interêt. Il comprend deux entrées ($i_1, i_2$), un neurones ($n_1$), deux réels ($w_1, w_2$) appellés poids et le biais du neurone ($b_1$). On a donc : 
+\begin{align*}
+P &= \begin{pmatrix}{w_1}\\{w_2}\end{pmatrix} \ et \ B = (b)
+\end{align*}
+\begin{align}
+n_1 &= f_{2,1} ( (i_1 \ i_2) ) = \sigma \left[(i_1 \ i_2).P +  B\right]
+\end{align}
+
+On peut alors schématiser un perceptron de la manière suivante:
+
+
+
+Le perceptron permet la classification d'ensemble linéairement séparable. C'est a dire que pour un espace E de dimension n $\in$ donné, si l'on peut classer les éléments de E de \textit{part et d'autre} d'un hyper-plan de E alors E est dit linéairement séparable.
+
+
+
+\subsection{Définition}\label{subsection: \thesubsection}
+
+
+Un réseau de neurones (à 0 couche (ou étage) pour commencer) peut etre rerésenté par l'application suivante:
+
+\begin{math}
+Soient \ P \in \mathcal{M}_{np}(\mathds{R}), B \in \mathcal{M}_{1,p}(\mathds{R})
+\end{math}
+\begin{align*}
+f_{pn}: \ \ \ \mathcal{M}_{1,n}(\mathds{R}) \ \ \ &\longrightarrow \ \ \ \mathcal{M}_{1,p}(\mathds{R}) \\
+  \begin{pmatrix}
+	{x_1 \ ... \ x_n}
+\end{pmatrix} &\longmapsto
+\sigma \left[
+\begin{pmatrix}
+	{x_1 \ ... \ x_n}
+\end{pmatrix} . 
+P - B \right]
+\end{align*}
+Détaillons cette application. Elle prend en argument $n$ scalaires vu comme un matrice ligne et effectue le produit matriciel de cette matrice par une matrice de $\mathcal{M}_{n,p}(\mathds{R})$ fixée dite de \textit{poids} afin de retourner $p$ scalaires toujours sous forme d'une matrice ligne. On donne enfin $p$ réels appellés biais que l'on retranche au vecteurs précédent. C'est biais sont un degré de liberté suplémentaire qui permet de donner de l'importance ou non un neurone en particulier.
+Les valeurs ainsi obtenue ne sont pas satisfaisantes, elles sont dispérées sur un domaine de définition trop large pour être interpretées. Il convient donc, à l'instar des neurones traditionels, d'utiliser une fonction d'activation qui restreint le domaine de définition des valeurs. Les plus courantes sont la fonction sigmoid ($\sigma$) et tangente hyperbolique. 
+
+\iffalse
+On définit la fonction sigmoid:
+
+\begin{align*}
+\sigma : x  \longmapsto \frac{1}{1 + e^{-x}}
+\end{align*}
+\fi
+
+\subsection{Exemples}\label{subsection: \thesubsection}
+
+Pour un premier exemple, on peut considérer la porte logique AND. Vérifions que l'on peut représenter cette porte logique avec un perceptron. 
+
+\end{document}
+
