@@ -1,66 +1,37 @@
 import numpy as np
-import NeuralNetworkMultyLayer as nn
 from random import random,randint
 from PIL import Image as im
 
-pictPath = ""
-pictWidth = 10
-pictHeight = 10
-pickSize = 4
-
-
+sigmoid = np.vectorize(lambda x: (1/(1 + np.exp(-x))))
+int  = np.vectorize(int)
 imgOne = np.asarray(im.open("D:\\Média\\Photo\\Photo de profil\\Aout_2018.jpg"))
 print(imgOne)
-imgOne = im.fromarray(imgOne)
-imgOne.show()
 
-# *** Première convolution ***
-imgTwo = np.array([[0 for _ in range(pictWidth)] for i in range (pictHeight)])# NP array vide pour la première convolution
-rankOneW = np.array([[np.array([random(),random(),random()]) for _ in range(pictWidth)] for i in range (pictHeight)]) #Poids des pixels de imgOne
-rankOneB = np.array([[random() for _ in range(pictWidth)] for i in range (pictHeight)]) # Biais pour la première convolution
+shapeim = np.shape(imgOne)
+print(shapeim)
+weight =  np.random.rand(shapeim[0],shapeim[1],shapeim[2])/1000
+bias = np.random.rand(shapeim[0],shapeim[1],shapeim[2])/1000
+pick = 4
+def noyau_convolution(img, weightSet, biasSet, pickSize):
+    '''Prend une 'image' en entrée de dimension 3, un set de Poids de meme dimension
+    et un set de Biais de dimension 3 et retourne une 'image' de meme dimension que
+    le set de Biais, tout les tableaux sont des tableaux Numpy'''
 
-for i in range(pictHeight-pickSize):
-    for j in range(pictWidth-pickSize):
-        S = 0
-        for k in range(i,i+pickSize):
-            for l in range(j,j+pickSize):
-                S += imgOne[k,l,0]*rankOneW[k,l,0] + imgOne[k,l,1]*rankOneW[k,l,1] + imgOne[k,l,2]*rankOneW[k,l,2]
-        imgTwo[i,j] = S + rankOneB[i,j]
-nn.sigmoid(imgTwo)
+    forme_in = np.shape(img) #forme du tableau d'entrée
+    forme_out = np.shape(biasSet) #forme du tableau de sortie
+    output = np.zeros(forme_out) # Inisialisation du tableau de sortie à la bonne forme avec des zér0s
 
-
- # *** Deuxieme convolution ***
-imgThree = np.array([0 for _ in range((pictHeight-2*pickSize)*(pictWidth-2*pickSize))]) #Np array vide pour la deuxieme convolution
-rankTwoW = np.array([[np.array([random(),random(),random()]) for _ in range(pictWidth)] for i in range (pictHeight)]) #Poids des pixels de imgTwo
-rankTwoB = np.array([[random() for _ in range(pictWidth)] for i in range (pictHeight)]) # Biais pour la deuxieme convolution
-
-height = pictHeight-2*pickSize
-width = pictWidth-2*pickSize
-for i in range(height):
-    for j in range(width):
-        S = 0
-        for k in range(i,i+pickSize):
-            for l in range(j,j+pickSize):
-                S += imgTwo[k,l]*rankTwoW[k,l]
-        imgThree[i + width * j] = S + rankTwoB[i,j]
-
-nn.sigmoid(imgThree)
-
-def convolution(img, weightSet, biasSet, pickSize):
-    '''Prend une 'image' en entrée, les pois et biais associés et retourne une 'image' de dim n (déduite de biasSet)'''
-
-    forme = np.shape(img) #forme : (hauteur,largeur,profondeur)
-
-    output = np.zeros(forme)
-
-    for i in range(forme[0]-pickSize):
-        for j in range(forme[1]-pickSize):
+    for i in range(forme_in[0]-pickSize):
+        for j in range(forme_in[1]-pickSize):
             S = 0
             for k in range(i,i+pickSize):
                 for l in range(j,j+pickSize):
-                    if (forme[2]):
-                        for c in range(forme[2]):
-                            S += img[k,l,c]*weightSet[k,l,c]
-                    else :
-                        S += img[k,l]*weightSet[k,l]
-            output[i,j,c] = S + biasSet[i,j]
+                    for c in range(forme_in[2]-1):
+                        S += img[k,l,c]*weightSet[k,l,c]
+            output[i,j,c] = S + biasSet[i,j,c]
+    return (int(255*sigmoid(output)))
+
+imgTwo = noyau_convolution(imgOne, weight, bias, pick)
+imgTwo = np.array(imgTwo,dtype = "uint8")
+imgTwo = im.fromarray(imgTwo)
+imgTwo.show()
