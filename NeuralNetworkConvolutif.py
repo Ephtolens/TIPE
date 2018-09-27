@@ -13,7 +13,7 @@ imgOne = np.asarray(im.open("D:\\Média\\Photo\\Photo de profil\\Aout_2018.jpg")
 print(imgOne)
 imgOne = im.fromarray(imgOne)
 imgOne.show()
-'''
+
 # *** Première convolution ***
 imgTwo = np.array([[0 for _ in range(pictWidth)] for i in range (pictHeight)])# NP array vide pour la première convolution
 rankOneW = np.array([[np.array([random(),random(),random()]) for _ in range(pictWidth)] for i in range (pictHeight)]) #Poids des pixels de imgOne
@@ -45,13 +45,14 @@ for i in range(height):
         imgThree[i + width * j] = S + rankTwoB[i,j]
 
 nn.sigmoid(imgThree)
-'''
+
 def convolution(img, weightSet, biasSet, pickSize):
     '''Prend une 'image' en entrée, les pois et biais associés et retourne une 'image' de dim n (déduite de biasSet)'''
 
-    output = []
-
     forme = np.shape(img) #forme : (hauteur,largeur,profondeur)
+
+    output = np.zeros(forme)
+
     for i in range(forme[0]-pickSize):
         for j in range(forme[1]-pickSize):
             S = 0
@@ -62,6 +63,4 @@ def convolution(img, weightSet, biasSet, pickSize):
                             S += img[k,l,c]*weightSet[k,l,c]
                     else :
                         S += img[k,l]*weightSet[k,l]
-
-
-            output[i,j] = S + biasSet[i,j]
+            output[i,j,c] = S + biasSet[i,j]
